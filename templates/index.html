@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    {{ bootstrap.load_css() }}
+    <title>What-To-Do</title>
+    <style>
+        .completed {
+            text-decoration: line-through
+        }
+        ul li:nth-child(even) {
+            background: #ededed;
+        }
+        ul li:hover {
+            background: #ddd;
+        }
+        .list-group-item {
+            display: flex;
+        }
+        .list-group-item form {
+            margin-right: 10px;
+        }
+        .close {
+            position: absolute;
+            right: 0;
+            margin-right: 10px;
+        }
+        .edit {
+            position: absolute;
+            right: 0;
+            margin-right: 60px;
+        }
+        body {
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+    }
+    </style>
+</head>
+<body>
+
+    <div class="pt-2 pb-4 text-center bg-primary-subtle">
+        <h1>What-to-do</h1>
+        <form method="POST" action="{{ url_for('add') }}">
+            <input type="text" name="to_do">
+            <button type="submit">Add to-do</button>
+        </form>
+    </div>
+
+    {% if not to_do_list %}
+    <div class="text-center py-3 bg-white">
+        <h2 style="color:silver">I wonder what's next?</h2>
+    </div>
+    {% endif %}
+
+    <ul class="list-group">
+        {% for todo in to_do_list %}
+        <li class="list-group-item">
+            <form action="{{ url_for('check', index=loop.index0) }}" method="GET">
+                <button type="submit">✓</button>
+            </form>
+            <label class="{% if todo['completed'] %}completed{% endif %}">{{ todo['task'] }}</label>
+            {% if not todo['completed'] %}
+            <a href="{{ url_for('edit', index=loop.index0) }}" class="edit">Edit</a>
+            {% endif %}
+            <form action="{{ url_for('delete', index=loop.index0) }}" method="GET">
+                <button type="submit" class="close">×</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

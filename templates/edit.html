@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {{ bootstrap.load_css() }}
+    <title>What-To-Edit</title>
+    <style>
+        ul li:hover {
+            background: #ddd;
+        }
+        body {
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+    }
+    </style>
+</head>
+<body>
+    <div class="pt-2 pb-4 text-center bg-primary-subtle">
+        <h1>Edit-to-do</h1>
+        <form method="POST" action="{{ url_for('edit', index=index) }}">
+            <input type="text" name="to_do">
+            <button type="submit">Save to-do</button>
+        </form>
+    </div>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <label>{{ to_do['task'] }}</label>
+        </li>
+    </ul>
+</body>
+</html>
